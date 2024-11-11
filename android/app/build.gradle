@@ -1,0 +1,59 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin" // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id 'com.google.gms.google-services' // Firebase Google services plugin
+}
+
+android {
+    namespace = "com.example.test01"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.test01" // Specify your unique Application ID
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+        multiDexEnabled = true // Enables multidex if needed for Firebase dependencies
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+            minifyEnabled false // Keep minify disabled if you don't need code shrinking
+            shrinkResources false // Disable resource shrinking
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    // Import Firebase BOM for managing Firebase dependencies' versions
+    implementation platform('com.google.firebase:firebase-bom:31.0.2') // Use the latest version of Firebase BOM
+
+    // Firebase core dependencies
+    implementation 'com.google.firebase:firebase-firestore' // Firebase Firestore
+    implementation 'com.google.firebase:firebase-analytics' // Firebase Analytics (optional)
+
+    // Other Firebase dependencies (add as needed)
+    // implementation 'com.google.firebase:firebase-auth'
+    // implementation 'com.google.firebase:firebase-storage'
+
+    implementation 'androidx.multidex:multidex:2.0.1' // Enable multidex if your app exceeds the 64K method limit
+}
